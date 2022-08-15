@@ -69,8 +69,8 @@ func _move_or_rotate(inputDirection):
 	else:
 		# rotate
 		var targetAngle = inputAngle - PI/2
-		var rotationQuat = Quat(Vector3(body.rotation.x, targetAngle, body.rotation.z))
-		var targetTransform = Transform(Basis(rotationQuat), body.global_transform.origin)
+		#var rotationQuat = Quat(Vector3(body.rotation.x, targetAngle, body.rotation.z))
+		#var targetTransform = Transform(Basis(rotationQuat), body.global_transform.origin)
 		#var canRotate = not body.test_move(targetTransform, Vector3.ZERO, false)
 		#if canRotate:
 		var initalRotation = body.rotation.y
