@@ -45,6 +45,12 @@ scoop={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Excavator (All Physics)"
+3d_physics/layer_2="Moveable Object"
+3d_physics/layer_3="Arrows"
+
 [physics]
 
 common/enable_pause_aware_picking=true

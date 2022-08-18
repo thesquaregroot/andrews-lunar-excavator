@@ -1,5 +1,7 @@
 extends Spatial
 
+var ArrowScene = preload("res://Arrow.tscn")
+
 onready var body = $Body
 onready var contentsMesh = $Body/Scoop/Contents
 
@@ -9,16 +11,23 @@ onready var scoopDownRayCast = $Body/ScoopDownRayCast
 onready var dropRayCast = $Body/DropRayCast
 onready var dropTargetForward = $Body/DropTarget
 
+onready var arrowRayCast = $Body/ArrowRayCast
+
 onready var rotateRayCast = $Body/RotateRayCast
 
 signal moved
 
+const movementTime = 0.25
+
 var contents = null
+var isPerformingAction = false
 
 func _ready():
 	pass
 
 func _input(event):
+	if isPerformingAction:
+		return
 	if event.is_action_pressed("scoop"):
 		if contents:
 			# drop
@@ -43,9 +52,17 @@ func _input(event):
 		_move_or_rotate(Vector2.RIGHT)
 
 func _scoop(object):
+	var objectLocation = object.global_transform.origin
 	object.get_parent().remove_child(object)
 	contents = object
 	contentsMesh.visible = true
+	if arrowRayCast.is_colliding():
+		arrowRayCast.get_collider().move(-1)
+	else:
+		var arrow = ArrowScene.instance()
+		arrow.targetHeight = round(objectLocation.y + 1)
+		arrow.transform.origin = Vector3(objectLocation.x, round(objectLocation.y), objectLocation.z)
+		get_tree().root.add_child(arrow)
 
 func _drop(target):
 	var object = contents
@@ -53,6 +70,18 @@ func _drop(target):
 	object.global_transform.origin = target.global_transform.origin
 	contents = null
 	contentsMesh.visible = false
+	if arrowRayCast.is_colliding():
+		arrowRayCast.get_collider().move(1)
+	else:
+		var arrowTargetHeight = round(object.global_transform.origin.y)
+		var arrowPlacement = target.global_transform.origin + Vector3(0, 1, 0)
+		var arrow = ArrowScene.instance()
+		arrow.targetHeight = arrowTargetHeight
+		arrow.transform.origin = Vector3(arrowPlacement.x, round(arrowPlacement.y), arrowPlacement.z)
+		get_tree().root.add_child(arrow)
+
+func _action_complete():
+	isPerformingAction = false
 
 func _move_or_rotate(inputDirection):
 	var currentDirection = Vector2.DOWN.rotated(body.rotation.y).round()
@@ -63,7 +92,11 @@ func _move_or_rotate(inputDirection):
 		var moveVector = Vector3(inputDirection.x, 0, -inputDirection.y)
 		var canMove = not body.test_move(body.global_transform, moveVector, false)
 		if canMove:
-			self.translation += moveVector
+			var target = self.translation + moveVector
+			var tween = get_tree().create_tween()
+			tween.tween_property(self, "translation", target, movementTime)
+			tween.tween_callback(self, "_action_complete")
+			isPerformingAction = true
 		else:
 			print("Move blocked.")
 	else:
@@ -79,6 +112,13 @@ func _move_or_rotate(inputDirection):
 		if rotateRayCast.is_colliding():
 			body.rotation.y = initalRotation
 			print("Rotate blocked.")
+		else:
+			var targetTransform = body.transform.orthonormalized()
+			body.rotation.y = initalRotation
+			var tween = get_tree().create_tween()
+			tween.tween_property(body, "transform", targetTransform, movementTime)
+			tween.tween_callback(self, "_action_complete")
+			isPerformingAction = true
 	emit_signal("moved", self.global_transform.origin, dropTargetForward.global_transform.origin)
 
 func _clean_angle(angle):

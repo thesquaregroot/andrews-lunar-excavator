@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Arrow.gd" type="Script" id=1]
+[ext_resource path="res://DownArrowMaterial.tres" type="Material" id=2]
+[ext_resource path="res://UpArrowMaterial.tres" type="Material" id=3]
+
+[sub_resource type="PrismMesh" id=1]
+material = ExtResource( 3 )
+size = Vector3( 0.5, 0.25, 0.25 )
+
+[sub_resource type="CubeMesh" id=2]
+material = ExtResource( 3 )
+size = Vector3( 0.25, 0.5, 0.25 )
+
+[sub_resource type="PrismMesh" id=3]
+material = ExtResource( 2 )
+size = Vector3( 0.5, 0.25, 0.25 )
+
+[sub_resource type="CubeMesh" id=4]
+material = ExtResource( 2 )
+size = Vector3( 0.25, 0.5, 0.25 )
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.45, 10, 0.45 )
+
+[node name="Arrow" type="Area"]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource( 1 )
+
+[node name="ArrowBase" type="Spatial" parent="."]
+
+[node name="UpArrow" type="Spatial" parent="ArrowBase"]
+
+[node name="UpArrowHead" type="MeshInstance" parent="ArrowBase/UpArrow"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../../..")
+
+[node name="UpArrowBody" type="MeshInstance" parent="ArrowBase/UpArrow"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
+mesh = SubResource( 2 )
+skeleton = NodePath("../../..")
+
+[node name="DownArrow" type="Spatial" parent="ArrowBase"]
+visible = false
+
+[node name="DownArrowHead" type="MeshInstance" parent="ArrowBase/DownArrow"]
+transform = Transform( 1, 0, 0, 0, -1, 0, 0, 0, 1, 0, 0.125, 0 )
+mesh = SubResource( 3 )
+skeleton = NodePath("../../..")
+
+[node name="DownArrowBody" type="MeshInstance" parent="ArrowBase/DownArrow"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../../..")
+
+[node name="Collider" type="CollisionShape" parent="."]
+shape = SubResource( 5 )
