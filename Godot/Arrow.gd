@@ -18,7 +18,7 @@ func move(diff):
 	_update_arrow()
 
 func _process(_delta):
-	if not Engine.editor_hint:
+	if isReady and get_viewport().get_camera():
 		_update_arrow()
 		var targetLook = get_viewport().get_camera().global_transform.origin
 		targetLook.y = self.global_transform.origin.y + 1

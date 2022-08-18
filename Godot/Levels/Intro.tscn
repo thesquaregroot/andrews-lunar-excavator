@@ -1,20 +1,21 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://MoonMaterial.tres" type="Material" id=1]
-[ext_resource path="res://Wall.tscn" type="PackedScene" id=2]
-[ext_resource path="res://MoonBlock.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Excavator.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Wall.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MoonBlock.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Excavator.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://Arrow.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=6]
-[ext_resource path="res://icon.png" type="Texture" id=7]
+[ext_resource path="res://MoonMaterial.tres" type="Material" id=6]
+[ext_resource path="res://Level.gd" type="Script" id=7]
+[ext_resource path="res://icon.png" type="Texture" id=8]
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=4]
 size = 64
 outline_size = 8
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 6 )
+font_data = ExtResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=4]
+[sub_resource type="ParticlesMaterial" id=5]
 emission_shape = 2
 emission_box_extents = Vector3( 300, 100, 0 )
 flag_disable_z = true
@@ -28,6 +29,12 @@ angle_random = 1.0
 scale = 0.1
 scale_random = 0.14
 
+[sub_resource type="DynamicFont" id=3]
+size = 64
+outline_size = 2
+use_filter = true
+font_data = ExtResource( 4 )
+
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 256, 256 )
 
@@ -35,8 +42,9 @@ size = Vector2( 256, 256 )
 extents = Vector3( 128, 1, 128 )
 
 [node name="Level" type="Spatial"]
+script = ExtResource( 7 )
 
-[node name="Excavator" parent="." instance=ExtResource( 4 )]
+[node name="Excavator" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5 )
 
 [node name="LevelCompleteText" type="Label" parent="."]
@@ -50,7 +58,7 @@ margin_right = 269.5
 margin_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "LEVEL COMPLETE!"
 align = 1
 
@@ -59,8 +67,15 @@ position = Vector2( 263.5, 184 )
 amount = 128
 lifetime = 1.5
 explosiveness = 0.16
-process_material = SubResource( 4 )
-texture = ExtResource( 7 )
+process_material = SubResource( 5 )
+texture = ExtResource( 8 )
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0.5, 5, -4 )
+text = "WASD to move excavator
+
+Space to scoop/drop dirt"
+font = SubResource( 3 )
 
 [node name="MoonSurface" type="StaticBody" parent="."]
 collision_layer = 5
@@ -70,7 +85,7 @@ collision_mask = 5
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 mesh = SubResource( 1 )
 skeleton = NodePath("../..")
-material/0 = ExtResource( 1 )
+material/0 = ExtResource( 6 )
 
 [node name="CollisionShape" type="CollisionShape" parent="MoonSurface"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
@@ -82,37 +97,37 @@ shadow_enabled = true
 
 [node name="Blocks" type="Spatial" parent="."]
 
-[node name="MoonBlock" parent="Blocks" instance=ExtResource( 3 )]
+[node name="MoonBlock" parent="Blocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5 )
 
-[node name="MoonBlock2" parent="Blocks" instance=ExtResource( 3 )]
+[node name="MoonBlock2" parent="Blocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.5 )
 
-[node name="MoonBlock3" parent="Blocks" instance=ExtResource( 3 )]
+[node name="MoonBlock3" parent="Blocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -0.5 )
 
-[node name="MoonBlock4" parent="Blocks" instance=ExtResource( 3 )]
+[node name="MoonBlock4" parent="Blocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1.5 )
 
-[node name="MoonBlock5" parent="Blocks" instance=ExtResource( 3 )]
+[node name="MoonBlock5" parent="Blocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1.5 )
 
-[node name="MoonBlock6" parent="Blocks" instance=ExtResource( 3 )]
+[node name="MoonBlock6" parent="Blocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -1.5 )
 
 [node name="Walls" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0 )
 
-[node name="Wall1" parent="Walls" instance=ExtResource( 2 )]
+[node name="Wall1" parent="Walls" instance=ExtResource( 1 )]
 transform = Transform( 3, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="Wall2" parent="Walls" instance=ExtResource( 2 )]
+[node name="Wall2" parent="Walls" instance=ExtResource( 1 )]
 transform = Transform( -3, 0, -1.50996e-07, 0, 2, 0, 4.52987e-07, 0, -1, 0, 0, -2 )
 
-[node name="Wall3" parent="Walls" instance=ExtResource( 2 )]
+[node name="Wall3" parent="Walls" instance=ExtResource( 1 )]
 transform = Transform( 2.26494e-07, 0, -1, 0, 2, 0, 3, 0, 7.54979e-08, 2, 0, -1 )
 
-[node name="Wall4" parent="Walls" instance=ExtResource( 2 )]
+[node name="Wall4" parent="Walls" instance=ExtResource( 1 )]
 transform = Transform( -1.31134e-07, 0, 1, 0, 2, 0, -3, 0, -4.37114e-08, -2, 0, -1 )
 
 [node name="Arrow" parent="." instance=ExtResource( 5 )]

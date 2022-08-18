@@ -15,6 +15,8 @@ onready var arrowRayCast = $Body/ArrowRayCast
 
 onready var rotateRayCast = $Body/RotateRayCast
 
+signal arrow_added
+signal arrow_changed
 signal moved
 
 const movementTime = 0.25
@@ -23,7 +25,9 @@ var contents = null
 var isPerformingAction = false
 
 func _ready():
-	pass
+	var startingRotation = self.rotation
+	self.rotation = Vector3.ZERO
+	body.rotation = startingRotation
 
 func _input(event):
 	if isPerformingAction:
@@ -58,11 +62,13 @@ func _scoop(object):
 	contentsMesh.visible = true
 	if arrowRayCast.is_colliding():
 		arrowRayCast.get_collider().move(-1)
+		emit_signal("arrow_changed")
 	else:
 		var arrow = ArrowScene.instance()
 		arrow.targetHeight = round(objectLocation.y + 1)
 		arrow.transform.origin = Vector3(objectLocation.x, round(objectLocation.y), objectLocation.z)
 		get_tree().root.add_child(arrow)
+		emit_signal("arrow_added", arrow)
 
 func _drop(target):
 	var object = contents
@@ -72,6 +78,7 @@ func _drop(target):
 	contentsMesh.visible = false
 	if arrowRayCast.is_colliding():
 		arrowRayCast.get_collider().move(1)
+		emit_signal("arrow_changed")
 	else:
 		var arrowTargetHeight = round(object.global_transform.origin.y)
 		var arrowPlacement = target.global_transform.origin + Vector3(0, 1, 0)
@@ -79,6 +86,7 @@ func _drop(target):
 		arrow.targetHeight = arrowTargetHeight
 		arrow.transform.origin = Vector3(arrowPlacement.x, round(arrowPlacement.y), arrowPlacement.z)
 		get_tree().root.add_child(arrow)
+		emit_signal("arrow_added", arrow)
 
 func _action_complete():
 	isPerformingAction = false
