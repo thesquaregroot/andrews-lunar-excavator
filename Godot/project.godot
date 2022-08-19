@@ -12,7 +12,8 @@ config_version=4
 
 config/name="Andrew's Lunar Excavator"
 run/main_scene="res://LevelSelectScreen.tscn"
-config/icon="res://icon.png"
+boot_splash/show_image=false
+config/icon="res://Images/logo.png"
 
 [gui]
 
