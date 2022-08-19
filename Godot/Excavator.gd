@@ -25,12 +25,18 @@ signal moved
 signal restart_level
 signal exit_level
 
-const movementTime = 0.25
+const MOVEMENT_TIME_SEC = 0.25
+const ROTATION_SPEED = 3
 
 var contents = null
 var isPerformingAction = false
 
+var slerpValue = null
+var startingQuat = null
+var targetQuat = null
+
 func _ready():
+	set_process(false)
 	var startingRotation = self.rotation
 	self.rotation = Vector3.ZERO
 	body.rotation = startingRotation
@@ -130,9 +136,11 @@ func _move_or_rotate(inputDirection):
 		if canMove:
 			var target = self.translation + moveVector
 			var tween = get_tree().create_tween()
-			tween.tween_property(self, "translation", target, movementTime)
-			tween.tween_callback(self, "_action_complete")
+			# avoid changing y coordinate so lifts stay sane
+			tween.tween_property(self, "translation", target, MOVEMENT_TIME_SEC)
 			isPerformingAction = true
+			yield(tween, "finished")
+			_action_complete()
 		else:
 			print("Move blocked.")
 	else:
@@ -150,13 +158,25 @@ func _move_or_rotate(inputDirection):
 			body.rotation.y = initalRotation
 			print("Rotate blocked.")
 		else:
-			var targetTransform = body.transform.orthonormalized()
-			body.rotation.y = initalRotation
-			var tween = get_tree().create_tween()
-			tween.tween_property(body, "transform", targetTransform, movementTime)
-			tween.tween_callback(self, "_action_complete")
 			isPerformingAction = true
+			slerpValue = 0.0
+			targetQuat = Quat(body.transform.orthonormalized().basis)
+			body.rotation.y = initalRotation
+			startingQuat = Quat(body.transform.orthonormalized().basis)
+			set_process(true)
 	emit_signal("moved", self.global_transform.origin, dropTargetForward.global_transform.origin)
+
+func _process(delta):
+	if slerpValue > 1:
+		body.transform.basis = Basis(targetQuat)
+		slerpValue = null
+		startingQuat = null
+		targetQuat = null
+		isPerformingAction = false
+		set_process(false)
+	else:
+		body.transform.basis = Basis(startingQuat.slerp(targetQuat, slerpValue))
+		slerpValue += delta * ROTATION_SPEED
 
 func _clean_angle(angle):
 	return stepify(fposmod(angle, TAU), PI/4)

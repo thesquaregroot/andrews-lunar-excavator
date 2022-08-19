@@ -10,6 +10,7 @@ onready var collisionShape = $CollisionShape
 
 var isReady = false
 var activatingBody = null
+var endHeight
 
 func _ready():
 	isReady = true
@@ -38,8 +39,7 @@ func _update_meshes():
 		rodHeight += 1
 		colliderHeight = 2
 	# update meshes/colliders
-	var tween = get_tree().create_tween()
-	tween.set_parallel(true)
+	var tween = get_tree().create_tween().set_parallel(true)
 	var duration = 0.5
 	tween.tween_property(rod.mesh, "height", rodHeight, duration)
 	tween.tween_property(rod, "translation:y", rodHeight / 2.0, duration)
@@ -48,7 +48,21 @@ func _update_meshes():
 	tween.tween_property(platform, "translation:y", platformHeight, duration)
 	if activatingBody != null:
 		var heightDiff = 1 if isRaised else -1
-		tween.tween_property(activatingBody, "translation:y", activatingBody.translation.y + heightDiff, duration)
+		endHeight = activatingBody.translation.y + heightDiff
+		tween.tween_property(activatingBody, "translation:y", endHeight, duration)
+		if activatingBody.is_in_group("excavator_body"):
+			tween.tween_method(self, "_set_performing_action", 0.0, 1.0, duration)
+	yield(tween, "finished")
+	self._activation_complete()
+
+func _set_performing_action(_value):
+	if activatingBody != null:
+		activatingBody.get_parent().isPerformingAction = true
+
+func _activation_complete():
+	if activatingBody != null:
+		activatingBody.translation.y = endHeight # ensure end height is reached exactly
+		activatingBody.get_parent().isPerformingAction = false
 		activatingBody = null
 
 func _physics_process(delta):
