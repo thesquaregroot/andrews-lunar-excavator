@@ -17,6 +17,11 @@ onready var bodyRayCast = $Body/BodyRayCast
 onready var armRayCast = $Body/ArmRayCast
 onready var floorRayCast = $Body/FloorRayCast
 
+onready var moveSound = $MoveSound
+onready var scoopSound = $ScoopSound
+onready var dropSound = $DropSound
+onready var levelCompleteSound = $LevelCompleteSound
+
 onready var pauseMenu = $PauseMenu
 
 signal arrow_added
@@ -74,6 +79,7 @@ func _input(event):
 		_move_or_rotate(Vector2.RIGHT)
 
 func _scoop(object):
+	scoopSound.play()
 	var objectLocation = object.global_transform.origin
 	object.get_parent().remove_child(object)
 	contents = object
@@ -90,6 +96,7 @@ func _scoop(object):
 			emit_signal("arrow_added", arrow)
 
 func _drop(target):
+	dropSound.play()
 	var object = contents
 	get_parent().add_child(object)
 	object.global_transform.origin = target.global_transform.origin
@@ -134,6 +141,7 @@ func _move_or_rotate(inputDirection):
 			armRayCast.force_raycast_update()
 			canMove = canMove and not armRayCast.is_colliding() 
 		if canMove:
+			moveSound.play()
 			var target = self.translation + moveVector
 			var tween = get_tree().create_tween()
 			# avoid changing y coordinate so lifts stay sane
@@ -158,6 +166,7 @@ func _move_or_rotate(inputDirection):
 			body.rotation.y = initalRotation
 			print("Rotate blocked.")
 		else:
+			moveSound.play()
 			isPerformingAction = true
 			slerpValue = 0.0
 			targetQuat = Quat(body.transform.orthonormalized().basis)
@@ -180,6 +189,9 @@ func _process(delta):
 
 func _clean_angle(angle):
 	return stepify(fposmod(angle, TAU), PI/4)
+
+func celebrate():
+	levelCompleteSound.play()
 
 #func _physics_process(delta):
 #	# gravity

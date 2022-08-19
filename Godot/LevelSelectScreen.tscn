@@ -177,9 +177,10 @@ margin_bottom = 175.0
 disabled = true
 text = "Level 12"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 autoplay = true
+bus = "Music"
 
 [node name="LevelRoot" type="Spatial" parent="."]
 pause_mode = 1

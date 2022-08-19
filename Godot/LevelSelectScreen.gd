@@ -42,7 +42,7 @@ func _level_complete():
 	var nextLevelIndex = currentLevelIndex + 1
 	if gridContainer.get_child_count() > nextLevelIndex:
 		var nextLevelButton = gridContainer.get_child(nextLevelIndex)
-		nextLevelButton.disabled = false
+		gridContainer.get_child(currentLevelIndex).disabled = false
 		_load_level(nextLevelButton.levelPath, nextLevelIndex)
 	else:
 		# all levels complete

@@ -1,8 +1,12 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Excavator.gd" type="Script" id=1]
 [ext_resource path="res://Images/lunarrock_d.png" type="Texture" id=2]
 [ext_resource path="res://Theme.tres" type="Theme" id=3]
+[ext_resource path="res://Audio/move.wav" type="AudioStream" id=4]
+[ext_resource path="res://Audio/scoop.wav" type="AudioStream" id=5]
+[ext_resource path="res://Audio/drop.wav" type="AudioStream" id=6]
+[ext_resource path="res://Audio/level-complete.wav" type="AudioStream" id=7]
 
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.6, 0.6, 0.8 )
@@ -138,6 +142,22 @@ collision_mask = 2
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.438371, 0.898794, 0, -0.898794, 0.438371, 0, 10, 4 )
+
+[node name="MoveSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+bus = "SFX"
+
+[node name="ScoopSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "SFX"
+
+[node name="DropSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+bus = "SFX"
+
+[node name="LevelCompleteSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "CelebrationMusic"
 
 [node name="PauseMenu" type="Control" parent="."]
 pause_mode = 2
