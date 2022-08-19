@@ -13,7 +13,9 @@ onready var dropTargetForward = $Body/DropTarget
 
 onready var arrowRayCast = $Body/ArrowRayCast
 
-onready var rotateRayCast = $Body/RotateRayCast
+onready var bodyRayCast = $Body/BodyRayCast
+onready var armRayCast = $Body/ArmRayCast
+onready var floorRayCast = $Body/FloorRayCast
 
 signal arrow_added
 signal arrow_changed
@@ -60,33 +62,35 @@ func _scoop(object):
 	object.get_parent().remove_child(object)
 	contents = object
 	contentsMesh.visible = true
-	if arrowRayCast.is_colliding():
-		arrowRayCast.get_collider().move(-1)
-		emit_signal("arrow_changed")
-	else:
-		var arrow = ArrowScene.instance()
-		arrow.targetHeight = round(objectLocation.y + 1)
-		arrow.transform.origin = Vector3(objectLocation.x, round(objectLocation.y), objectLocation.z)
-		get_tree().root.add_child(arrow)
-		emit_signal("arrow_added", arrow)
+	if object.is_in_group("height_changer"):
+		if arrowRayCast.is_colliding():
+			arrowRayCast.get_collider().move(-1)
+			emit_signal("arrow_changed")
+		else:
+			var arrow = ArrowScene.instance()
+			arrow.targetHeight = round(objectLocation.y + 1)
+			arrow.transform.origin = Vector3(objectLocation.x, round(objectLocation.y), objectLocation.z)
+			get_parent().add_child(arrow)
+			emit_signal("arrow_added", arrow)
 
 func _drop(target):
 	var object = contents
-	get_tree().root.add_child(object)
+	get_parent().add_child(object)
 	object.global_transform.origin = target.global_transform.origin
 	contents = null
 	contentsMesh.visible = false
-	if arrowRayCast.is_colliding():
-		arrowRayCast.get_collider().move(1)
-		emit_signal("arrow_changed")
-	else:
-		var arrowTargetHeight = round(object.global_transform.origin.y)
-		var arrowPlacement = target.global_transform.origin + Vector3(0, 1, 0)
-		var arrow = ArrowScene.instance()
-		arrow.targetHeight = arrowTargetHeight
-		arrow.transform.origin = Vector3(arrowPlacement.x, round(arrowPlacement.y), arrowPlacement.z)
-		get_tree().root.add_child(arrow)
-		emit_signal("arrow_added", arrow)
+	if object.is_in_group("height_changer"):
+		if arrowRayCast.is_colliding():
+			arrowRayCast.get_collider().move(1)
+			emit_signal("arrow_changed")
+		else:
+			var arrowTargetHeight = round(object.global_transform.origin.y)
+			var arrowPlacement = target.global_transform.origin + Vector3(0, 1, 0)
+			var arrow = ArrowScene.instance()
+			arrow.targetHeight = arrowTargetHeight
+			arrow.transform.origin = Vector3(arrowPlacement.x, round(arrowPlacement.y), arrowPlacement.z)
+			get_parent().add_child(arrow)
+			emit_signal("arrow_added", arrow)
 
 func _action_complete():
 	isPerformingAction = false
@@ -97,8 +101,22 @@ func _move_or_rotate(inputDirection):
 	var inputAngle = _clean_angle(inputDirection.angle())
 	if is_equal_approx(inputAngle, currentAngle) or is_equal_approx(inputAngle, _clean_angle(currentAngle + PI)):
 		# move
+		var isMovingForward = is_equal_approx(inputAngle, currentAngle)
 		var moveVector = Vector3(inputDirection.x, 0, -inputDirection.y)
-		var canMove = not body.test_move(body.global_transform, moveVector, false)
+		#var canMove = not body.test_move(body.global_transform, moveVector, false)
+		if isMovingForward:
+			bodyRayCast.cast_to = Vector3.FORWARD
+			floorRayCast.translation.z = -1
+		else:
+			bodyRayCast.cast_to = Vector3.BACK
+			floorRayCast.translation.z = 1
+		bodyRayCast.force_raycast_update()
+		floorRayCast.force_raycast_update()
+		var canMove = not bodyRayCast.is_colliding() and floorRayCast.is_colliding()
+		if isMovingForward:
+			armRayCast.cast_to = Vector3.FORWARD * 2
+			armRayCast.force_raycast_update()
+			canMove = canMove and not armRayCast.is_colliding() 
 		if canMove:
 			var target = self.translation + moveVector
 			var tween = get_tree().create_tween()
@@ -116,8 +134,9 @@ func _move_or_rotate(inputDirection):
 		#if canRotate:
 		var initalRotation = body.rotation.y
 		body.rotation.y = targetAngle
-		rotateRayCast.force_raycast_update()
-		if rotateRayCast.is_colliding():
+		armRayCast.cast_to = Vector3.FORWARD
+		armRayCast.force_raycast_update()
+		if armRayCast.is_colliding():
 			body.rotation.y = initalRotation
 			print("Rotate blocked.")
 		else:
@@ -132,7 +151,7 @@ func _move_or_rotate(inputDirection):
 func _clean_angle(angle):
 	return stepify(fposmod(angle, TAU), PI/4)
 
-func _physics_process(delta):
-	# gravity
-	if not body.test_move(body.global_transform, Vector3.DOWN * delta, false):
-		self.translation.y -= delta
+#func _physics_process(delta):
+#	# gravity
+#	if not body.test_move(body.global_transform, Vector3.DOWN * delta, false):
+#		self.translation.y -= delta

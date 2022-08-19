@@ -1,34 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Button.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Fonts/RobotoFont.tres" type="DynamicFont" id=2]
-
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 10.0
-content_margin_right = 10.0
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-bg_color = Color( 0.619608, 0.823529, 0.776471, 1 )
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color( 0.329412, 0.729412, 0.72549, 1 )
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="Theme" id=3]
-Button/colors/font_color = Color( 0.141176, 0.141176, 0.141176, 1 )
-Button/fonts/font = ExtResource( 2 )
-Button/styles/disabled = SubResource( 1 )
-Button/styles/focus = SubResource( 1 )
-Button/styles/hover = SubResource( 1 )
-Button/styles/normal = SubResource( 1 )
-Button/styles/pressed = SubResource( 1 )
-Label/colors/font_color = Color( 0.141176, 0.141176, 0.141176, 1 )
-Label/fonts/font = ExtResource( 2 )
+[ext_resource path="res://Theme.tres" type="Theme" id=2]
+[ext_resource path="res://LevelSelectScreen.gd" type="Script" id=3]
+[ext_resource path="res://Audio/lighthearted_loop.ogg" type="AudioStream" id=4]
 
 [sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.988827 )
@@ -37,139 +12,172 @@ colors = PoolColorArray( 0.968627, 0.92549, 0.870588, 1, 0.913725, 0.854902, 0.7
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 4 )
 
-[node name="LevelSelectScreen" type="Control"]
+[node name="LevelSelectScreen" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="UI" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource( 3 )
+theme = ExtResource( 2 )
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="UI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = SubResource( 2 )
 expand = true
 
-[node name="Label" type="Label" parent="."]
+[node name="TitleLabel" type="Label" parent="UI"]
 anchor_left = 0.5
 anchor_top = 0.25
 anchor_right = 0.5
 anchor_bottom = 0.25
 grow_horizontal = 2
+grow_vertical = 2
 text = "Andrew's Lunar Excavator"
 align = 1
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="GameCompleteLabel" type="Label" parent="UI"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.75
+anchor_right = 0.5
+anchor_bottom = 0.75
+grow_horizontal = 2
+grow_vertical = 2
+text = "GAME COMPLETE!"
+align = 1
+
+[node name="GridContainer" type="GridContainer" parent="UI"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -153.0
-margin_top = -50.0
-margin_right = 153.0
-margin_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 custom_constants/vseparation = 14
 custom_constants/hseparation = 6
 columns = 4
 
-[node name="Level1" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level1" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 200.0
-margin_bottom = 40.0
+margin_bottom = 49.0
 text = "Level 1"
+levelPath = "res://Levels/Intro.tscn"
 
-[node name="Level2" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level2" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 206.0
 margin_right = 406.0
-margin_bottom = 40.0
+margin_bottom = 49.0
+disabled = true
 text = "Level 2"
 levelPath = "res://Levels/Maneuver.tscn"
 
-[node name="Level3" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level3" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 412.0
 margin_right = 612.0
-margin_bottom = 40.0
+margin_bottom = 49.0
+disabled = true
 text = "Level 3"
+levelPath = "res://Levels/GoingUp.tscn"
 
-[node name="Level4" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level4" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 618.0
 margin_right = 818.0
-margin_bottom = 40.0
+margin_bottom = 49.0
+disabled = true
 text = "Level 4"
+levelPath = "res://Levels/Platforming.tscn"
 
-[node name="Level5" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level5" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 54.0
+margin_top = 63.0
 margin_right = 200.0
-margin_bottom = 94.0
+margin_bottom = 112.0
+disabled = true
 text = "Level 5"
+levelPath = "res://Levels/Grifting.tscn"
 
-[node name="Level6" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level6" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 206.0
-margin_top = 54.0
+margin_top = 63.0
 margin_right = 406.0
-margin_bottom = 94.0
+margin_bottom = 112.0
+disabled = true
 text = "Level 6"
+levelPath = "res://Levels/OverTheWall.tscn"
 
-[node name="Level7" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level7" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 412.0
-margin_top = 54.0
+margin_top = 63.0
 margin_right = 612.0
-margin_bottom = 94.0
+margin_bottom = 112.0
+disabled = true
 text = "Level 7"
 
-[node name="Level8" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level8" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 618.0
-margin_top = 54.0
+margin_top = 63.0
 margin_right = 818.0
-margin_bottom = 94.0
+margin_bottom = 112.0
+disabled = true
 text = "Level 8"
 
-[node name="Level9" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level9" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 108.0
+margin_top = 126.0
 margin_right = 200.0
-margin_bottom = 148.0
+margin_bottom = 175.0
+disabled = true
 text = "Level 9"
 
-[node name="Level10" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level10" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 206.0
-margin_top = 108.0
+margin_top = 126.0
 margin_right = 406.0
-margin_bottom = 148.0
+margin_bottom = 175.0
+disabled = true
 text = "Level 10"
 
-[node name="Level11" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level11" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 412.0
-margin_top = 108.0
+margin_top = 126.0
 margin_right = 612.0
-margin_bottom = 148.0
+margin_bottom = 175.0
+disabled = true
 text = "Level 11"
 
-[node name="Level12" parent="GridContainer" instance=ExtResource( 1 )]
+[node name="Level12" parent="UI/GridContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 618.0
-margin_top = 108.0
+margin_top = 126.0
 margin_right = 818.0
-margin_bottom = 148.0
+margin_bottom = 175.0
+disabled = true
 text = "Level 12"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+autoplay = true
+
+[node name="LevelRoot" type="Spatial" parent="."]

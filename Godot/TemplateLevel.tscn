@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://MoonMaterial.tres" type="Material" id=1]
 [ext_resource path="res://Wall.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Arrow.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://icon.png" type="Texture" id=7]
+[ext_resource path="res://Level.gd" type="Script" id=8]
 
 [sub_resource type="DynamicFont" id=3]
 size = 64
@@ -35,6 +36,7 @@ size = Vector2( 256, 256 )
 extents = Vector3( 128, 1, 128 )
 
 [node name="Level" type="Spatial"]
+script = ExtResource( 8 )
 
 [node name="Excavator" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5 )

@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://LiftMaterial.tres" type="Material" id=1]
+[ext_resource path="res://Lift.gd" type="Script" id=2]
+
+[sub_resource type="CubeMesh" id=1]
+material = ExtResource( 1 )
+size = Vector3( 1, 0.05, 1 )
+
+[sub_resource type="CylinderMesh" id=2]
+resource_local_to_scene = true
+material = ExtResource( 1 )
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.95
+
+[sub_resource type="SphereShape" id=5]
+radius = 0.25
+
+[sub_resource type="BoxShape" id=6]
+resource_local_to_scene = true
+margin = 0.01
+extents = Vector3( 0.5, 0.5, 0.5 )
+
+[node name="Lift" type="KinematicBody"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource( 2 )
+
+[node name="Bottom" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0 )
+mesh = SubResource( 1 )
+
+[node name="Rod" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0 )
+mesh = SubResource( 2 )
+
+[node name="Platform" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.975, 0 )
+mesh = SubResource( 1 )
+
+[node name="ActivationArea" type="Area" parent="Platform"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape" type="CollisionShape" parent="Platform/ActivationArea"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+shape = SubResource( 6 )

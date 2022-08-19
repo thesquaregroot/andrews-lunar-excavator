@@ -1,5 +1,7 @@
 extends Spatial
 
+signal level_complete
+
 export (NodePath) var excavatorNodePath = NodePath("Excavator")
 
 onready var levelCompleteText = $LevelCompleteText
@@ -31,9 +33,7 @@ func _check_arrows():
 func _level_complete():
 	levelCompleteText.visible = true
 	yield(get_tree().create_timer(3.0), "timeout")
-	var err = get_tree().change_scene("res://LevelSelectScreen.tscn")
-	if err:
-		print("Unable to return to home screen")
+	emit_signal("level_complete")
 
 func _get_all_arrows(rootNode):
 	var arrows = []
