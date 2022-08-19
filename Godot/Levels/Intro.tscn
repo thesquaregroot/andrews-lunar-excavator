@@ -8,6 +8,7 @@
 [ext_resource path="res://MoonMaterial.tres" type="Material" id=6]
 [ext_resource path="res://Level.gd" type="Script" id=7]
 [ext_resource path="res://icon.png" type="Texture" id=8]
+[ext_resource path="res://Fonts/3DLabelFont.tres" type="DynamicFont" id=9]
 
 [sub_resource type="DynamicFont" id=4]
 size = 64
@@ -28,12 +29,6 @@ angle = 171.1
 angle_random = 1.0
 scale = 0.1
 scale_random = 0.14
-
-[sub_resource type="DynamicFont" id=3]
-size = 64
-outline_size = 2
-use_filter = true
-font_data = ExtResource( 4 )
 
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 256, 256 )
@@ -75,7 +70,7 @@ transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0.5, 5, -4 
 text = "WASD to move excavator
 
 Space to scoop/drop dirt"
-font = SubResource( 3 )
+font = ExtResource( 9 )
 
 [node name="MoonSurface" type="StaticBody" parent="."]
 collision_layer = 5

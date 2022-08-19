@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Lift.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Wall.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Arrow.tscn" type="PackedScene" id=7]
 [ext_resource path="res://MoonMaterial.tres" type="Material" id=8]
 [ext_resource path="res://icon.png" type="Texture" id=9]
+[ext_resource path="res://Fonts/3DLabelFont.tres" type="DynamicFont" id=10]
 
 [sub_resource type="DynamicFont" id=3]
 size = 64
@@ -184,3 +185,12 @@ targetHeight = 2
 
 [node name="Lift" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -3.5 )
+
+[node name="Lift2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -10.5 )
+isRaised = true
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0.5, 2.01, -10 )
+text = "Take the lift!"
+font = ExtResource( 10 )

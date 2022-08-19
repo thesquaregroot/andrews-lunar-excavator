@@ -5,6 +5,8 @@ onready var gridContainer = $UI/GridContainer
 onready var levelRoot = $LevelRoot
 onready var gameCompleteLabel = $UI/GameCompleteLabel
 
+var currentLevelScene = null
+var currentLevelIndex = 0
 var completedLevels = []
 
 func _ready():
@@ -14,19 +16,31 @@ func _ready():
 		levelIndex += 1
 
 func _load_level(levelPath, levelIndex):
-	var level = load(levelPath).instance()
+	currentLevelScene = load(levelPath)
+	currentLevelIndex = levelIndex
+	_load_current_level()
+	ui.visible = false
+
+func _load_current_level():
+	var level = currentLevelScene.instance()
 	for child in levelRoot.get_children():
 		child.queue_free()
 	levelRoot.add_child(level)
-	level.connect("level_complete", self, "_level_complete", [levelIndex])
-	ui.visible = false
+	level.connect("level_complete", self, "_level_complete")
+	level.connect("restart_level", self, "_load_current_level")
+	level.connect("exit_level", self, "_exit_level")
 
-func _level_complete(levelIndex):
+func _exit_level():
+	ui.visible = true
+	for child in levelRoot.get_children():
+		child.queue_free()
+
+func _level_complete():
 	# mark level as complete
-	completedLevels.append(levelIndex)
-	gridContainer.get_child(levelIndex).disabled = false
+	completedLevels.append(currentLevelIndex)
+	gridContainer.get_child(currentLevelIndex).disabled = false
 	# load next level directly
-	var nextLevelIndex = levelIndex + 1
+	var nextLevelIndex = currentLevelIndex + 1
 	if gridContainer.get_child_count() > nextLevelIndex:
 		var nextLevelButton = gridContainer.get_child(nextLevelIndex)
 		_load_level(nextLevelButton.levelPath, nextLevelIndex)

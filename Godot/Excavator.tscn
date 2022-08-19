@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Excavator.gd" type="Script" id=1]
 [ext_resource path="res://Images/lunarrock_d.png" type="Texture" id=2]
+[ext_resource path="res://Theme.tres" type="Theme" id=3]
 
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.6, 0.6, 0.8 )
@@ -137,3 +138,41 @@ collision_mask = 2
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.438371, 0.898794, 0, -0.898794, 0.438371, 0, 10, 4 )
+
+[node name="PauseMenu" type="Control" parent="."]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+
+[node name="TextureRect" type="ColorRect" parent="PauseMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.2, 0.2, 0.2, 0.501961 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 24
+
+[node name="ResumeButton" type="Button" parent="PauseMenu/VBoxContainer"]
+margin_right = 224.0
+margin_bottom = 49.0
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="PauseMenu/VBoxContainer"]
+margin_top = 73.0
+margin_right = 224.0
+margin_bottom = 122.0
+text = "Restart Level"
+
+[node name="ExitButton" type="Button" parent="PauseMenu/VBoxContainer"]
+margin_top = 146.0
+margin_right = 224.0
+margin_bottom = 195.0
+text = "Exit to Level Select"

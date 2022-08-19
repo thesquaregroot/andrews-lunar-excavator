@@ -17,9 +17,13 @@ onready var bodyRayCast = $Body/BodyRayCast
 onready var armRayCast = $Body/ArmRayCast
 onready var floorRayCast = $Body/FloorRayCast
 
+onready var pauseMenu = $PauseMenu
+
 signal arrow_added
 signal arrow_changed
 signal moved
+signal restart_level
+signal exit_level
 
 const movementTime = 0.25
 
@@ -30,8 +34,14 @@ func _ready():
 	var startingRotation = self.rotation
 	self.rotation = Vector3.ZERO
 	body.rotation = startingRotation
+	$PauseMenu.visible = false
+	$PauseMenu/VBoxContainer/ResumeButton.connect("pressed", pauseMenu, "set_visible", [false])
+	$PauseMenu/VBoxContainer/RestartButton.connect("pressed", self, "emit_signal", ["restart_level"])
+	$PauseMenu/VBoxContainer/ExitButton.connect("pressed", self, "emit_signal", ["exit_level"])
 
 func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		pauseMenu.visible = not pauseMenu.visible
 	if isPerformingAction:
 		return
 	if event.is_action_pressed("scoop"):

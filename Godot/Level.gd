@@ -1,5 +1,7 @@
 extends Spatial
 
+signal restart_level
+signal exit_level
 signal level_complete
 
 export (NodePath) var excavatorNodePath = NodePath("Excavator")
@@ -17,6 +19,9 @@ func _ready():
 	excavator.connect("arrow_added", self, "_new_arrow")
 	# check for level completion when arrows are changed
 	excavator.connect("arrow_changed", self, "_check_arrows")
+	# pause menu signals
+	excavator.connect("restart_level", self, "emit_signal", ["restart_level"])
+	excavator.connect("exit_level", self, "emit_signal", ["exit_level"])
 
 func _new_arrow(arrow):
 	knownArrows.append(arrow)

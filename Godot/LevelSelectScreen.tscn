@@ -13,6 +13,7 @@ colors = PoolColorArray( 0.968627, 0.92549, 0.870588, 1, 0.913725, 0.854902, 0.7
 gradient = SubResource( 4 )
 
 [node name="LevelSelectScreen" type="Spatial"]
+pause_mode = 2
 script = ExtResource( 3 )
 
 [node name="UI" type="Control" parent="."]
@@ -181,3 +182,4 @@ stream = ExtResource( 4 )
 autoplay = true
 
 [node name="LevelRoot" type="Spatial" parent="."]
+pause_mode = 1
