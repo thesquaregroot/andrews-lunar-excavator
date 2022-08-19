@@ -38,11 +38,11 @@ func _exit_level():
 func _level_complete():
 	# mark level as complete
 	completedLevels.append(currentLevelIndex)
-	gridContainer.get_child(currentLevelIndex).disabled = false
 	# load next level directly
 	var nextLevelIndex = currentLevelIndex + 1
 	if gridContainer.get_child_count() > nextLevelIndex:
 		var nextLevelButton = gridContainer.get_child(nextLevelIndex)
+		nextLevelButton.disabled = false
 		_load_level(nextLevelButton.levelPath, nextLevelIndex)
 	else:
 		# all levels complete
