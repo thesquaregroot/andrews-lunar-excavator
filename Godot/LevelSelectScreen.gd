@@ -4,6 +4,8 @@ onready var ui = $UI
 onready var gridContainer = $UI/GridContainer
 onready var levelRoot = $LevelRoot
 onready var gameCompleteLabel = $UI/GameCompleteLabel
+onready var musicVolumeSlider = $UI/SoundControls/MusicVolumeSlider
+onready var sfxVolumeSlider = $UI/SoundControls/SFXVolumeSlider
 
 var currentLevelScene = null
 var currentLevelIndex = 0
@@ -14,6 +16,8 @@ func _ready():
 	for levelButton in gridContainer.get_children():
 		levelButton.connect("load_level", self, "_load_level", [levelIndex])
 		levelIndex += 1
+	musicVolumeSlider.connect("value_changed", self, "_set_music_volume")
+	sfxVolumeSlider.connect("value_changed", self, "_set_sfx_volume")
 
 func _load_level(levelPath, levelIndex):
 	currentLevelScene = load(levelPath)
@@ -50,3 +54,14 @@ func _level_complete():
 		for child in levelRoot.get_children():
 			child.queue_free()
 		gameCompleteLabel.visible = true
+
+func _set_music_volume(value):
+	print(value)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music (Output)"), _to_db(value))
+
+func _set_sfx_volume(value):
+	print(value)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX (Output)"), _to_db(value))
+
+func _to_db(value):
+	return (value - 100) / 100 * 80.0

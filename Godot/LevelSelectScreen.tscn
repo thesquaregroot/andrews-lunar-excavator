@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Button.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Theme.tres" type="Theme" id=2]
 [ext_resource path="res://LevelSelectScreen.gd" type="Script" id=3]
 [ext_resource path="res://Audio/lighthearted_loop.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Fonts/RobotoFont.tres" type="DynamicFont" id=5]
 
 [sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.988827 )
@@ -176,6 +177,47 @@ margin_right = 818.0
 margin_bottom = 175.0
 disabled = true
 text = "Level 12"
+
+[node name="SoundControls" type="GridContainer" parent="UI"]
+anchor_left = 0.2
+anchor_top = 0.7
+anchor_right = 0.8
+anchor_bottom = 0.7
+custom_constants/vseparation = 4
+custom_constants/hseparation = 14
+columns = 2
+
+[node name="MusicVolumeLabel" type="Label" parent="UI/SoundControls"]
+margin_right = 176.0
+margin_bottom = 29.0
+custom_fonts/font = ExtResource( 5 )
+text = "Music Volume: "
+
+[node name="MusicVolumeSlider" type="HSlider" parent="UI/SoundControls"]
+margin_left = 190.0
+margin_right = 614.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+value = 100.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="SFXVolumeLabel" type="Label" parent="UI/SoundControls"]
+margin_top = 33.0
+margin_right = 176.0
+margin_bottom = 62.0
+custom_fonts/font = ExtResource( 5 )
+text = "Effects Volume: "
+
+[node name="SFXVolumeSlider" type="HSlider" parent="UI/SoundControls"]
+margin_left = 190.0
+margin_top = 33.0
+margin_right = 614.0
+margin_bottom = 49.0
+size_flags_horizontal = 3
+value = 100.0
+tick_count = 20
+ticks_on_borders = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
