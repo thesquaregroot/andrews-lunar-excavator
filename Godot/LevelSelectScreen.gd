@@ -1,7 +1,7 @@
 extends Spatial
 
 onready var ui = $UI
-onready var gridContainer = $UI/GridContainer
+onready var levelButtonGrid = $UI/LevelButtonGrid
 onready var levelRoot = $LevelRoot
 onready var gameCompleteLabel = $UI/GameCompleteLabel
 onready var musicVolumeSlider = $UI/SoundControls/MusicVolumeSlider
@@ -13,7 +13,7 @@ var completedLevels = []
 
 func _ready():
 	var levelIndex = 0
-	for levelButton in gridContainer.get_children():
+	for levelButton in levelButtonGrid.get_children():
 		levelButton.connect("load_level", self, "_load_level", [levelIndex])
 		levelIndex += 1
 	musicVolumeSlider.connect("value_changed", self, "_set_music_volume")
@@ -44,9 +44,9 @@ func _level_complete():
 	completedLevels.append(currentLevelIndex)
 	# load next level directly
 	var nextLevelIndex = currentLevelIndex + 1
-	if gridContainer.get_child_count() > nextLevelIndex:
-		var nextLevelButton = gridContainer.get_child(nextLevelIndex)
-		gridContainer.get_child(currentLevelIndex).disabled = false
+	if levelButtonGrid.get_child_count() > nextLevelIndex:
+		var nextLevelButton = levelButtonGrid.get_child(nextLevelIndex)
+		levelButtonGrid.get_child(currentLevelIndex).disabled = false
 		_load_level(nextLevelButton.levelPath, nextLevelIndex)
 	else:
 		# all levels complete

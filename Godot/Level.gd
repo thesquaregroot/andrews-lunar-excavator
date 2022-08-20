@@ -37,6 +37,7 @@ func _check_arrows():
 	_level_complete()
 
 func _level_complete():
+	yield(get_tree().create_timer(1.0), "timeout")
 	levelCompleteText.visible = true
 	excavator.celebrate()
 	yield(get_tree().create_timer(3.0), "timeout")
