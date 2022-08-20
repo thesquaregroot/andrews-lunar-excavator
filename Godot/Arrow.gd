@@ -3,7 +3,7 @@ extends Spatial
 
 export (int) var targetHeight = 1 setget _set_target_height
 
-const BOUNCE_SPEED = 2.5
+const BOUNCE_SPEED = 2.0
 
 onready var arrowBase = $ArrowBase
 onready var upArrow = $ArrowBase/UpArrow

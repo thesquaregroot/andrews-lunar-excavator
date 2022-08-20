@@ -3,7 +3,7 @@ extends Spatial
 var ArrowScene = preload("res://Arrow.tscn")
 
 onready var body = $Body
-onready var contentsMesh = $Body/Scoop/Contents
+onready var contentsMesh = $Body/Excavator/Body/Arm1/Arm2/Scoop/ScoopContents
 
 onready var scoopForwardRayCast = $Body/ScoopForwardRayCast
 onready var scoopDownRayCast = $Body/ScoopDownRayCast
@@ -21,6 +21,8 @@ onready var moveSound = $MoveSound
 onready var scoopSound = $ScoopSound
 onready var dropSound = $DropSound
 onready var levelCompleteSound = $LevelCompleteSound
+
+onready var animationPlayer = $AnimationPlayer
 
 onready var pauseMenu = $PauseMenu
 
@@ -61,11 +63,14 @@ func _input(event):
 			if dropRayCast.is_colliding():
 				print("Cannot drop contents")
 			else:
+				animationPlayer.play("Drop")
 				_drop(dropTargetForward)
 		else:
 			if scoopForwardRayCast.is_colliding():
+				animationPlayer.play("ScoopForward")
 				_scoop(scoopForwardRayCast.get_collider())
 			elif scoopDownRayCast.is_colliding():
+				animationPlayer.play("ScoopDown")
 				_scoop(scoopDownRayCast.get_collider())
 			else:
 				print("Nothing to pick up")
