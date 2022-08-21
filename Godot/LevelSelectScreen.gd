@@ -4,8 +4,11 @@ onready var ui = $UI
 onready var levelButtonGrid = $UI/LevelButtonGrid
 onready var levelRoot = $LevelRoot
 onready var gameCompleteLabel = $UI/GameCompleteLabel
-onready var musicVolumeSlider = $UI/SoundSettings/MusicVolumeSlider
-onready var sfxVolumeSlider = $UI/SoundSettings/SFXVolumeSlider
+onready var musicVolumeSlider = $UI/Settings/MusicVolumeSlider
+onready var sfxVolumeSlider = $UI/Settings/SFXVolumeSlider
+
+onready var controlsButton = $UI/Settings/ControlsButton
+onready var controlsPopup = $UI/ControlsPopup
 
 var currentLevelScene = null
 var currentLevelIndex = 0
@@ -18,6 +21,7 @@ func _ready():
 		levelIndex += 1
 	musicVolumeSlider.connect("value_changed", self, "_set_music_volume")
 	sfxVolumeSlider.connect("value_changed", self, "_set_sfx_volume")
+	controlsButton.connect("pressed", controlsPopup, "popup")
 
 func _load_level(levelPath, levelIndex):
 	currentLevelScene = load(levelPath)

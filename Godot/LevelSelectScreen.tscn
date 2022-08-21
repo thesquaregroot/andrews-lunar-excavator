@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Button.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Theme.tres" type="Theme" id=2]
 [ext_resource path="res://LevelSelectScreen.gd" type="Script" id=3]
 [ext_resource path="res://Audio/lighthearted_loop.ogg" type="AudioStream" id=4]
+[ext_resource path="res://ControlsButton.gd" type="Script" id=5]
 [ext_resource path="res://Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://PopupCloseButton.gd" type="Script" id=7]
 
 [sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.988827 )
@@ -111,7 +113,7 @@ margin_right = 200.0
 margin_bottom = 112.0
 disabled = true
 text = "Level 5"
-levelPath = "res://Levels/Grifting.tscn"
+levelPath = "res://Levels/SteppingStone.tscn"
 
 [node name="Level6" parent="UI/LevelButtonGrid" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -122,7 +124,7 @@ margin_right = 406.0
 margin_bottom = 112.0
 disabled = true
 text = "Level 6"
-levelPath = "res://Levels/Construction.tscn"
+levelPath = "res://Levels/Grifting.tscn"
 
 [node name="Level7" parent="UI/LevelButtonGrid" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -133,7 +135,7 @@ margin_right = 612.0
 margin_bottom = 112.0
 disabled = true
 text = "Level 7"
-levelPath = "res://Levels/Bridge.tscn"
+levelPath = "res://Levels/Construction.tscn"
 
 [node name="Level8" parent="UI/LevelButtonGrid" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -144,7 +146,7 @@ margin_right = 818.0
 margin_bottom = 112.0
 disabled = true
 text = "Level 8"
-levelPath = "res://Levels/OverTheWall.tscn"
+levelPath = "res://Levels/Bridge.tscn"
 
 [node name="Level9" parent="UI/LevelButtonGrid" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -154,6 +156,7 @@ margin_right = 200.0
 margin_bottom = 175.0
 disabled = true
 text = "Level 9"
+levelPath = "res://Levels/OverTheWall.tscn"
 
 [node name="Level10" parent="UI/LevelButtonGrid" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -185,98 +188,195 @@ margin_bottom = 175.0
 disabled = true
 text = "Level 12"
 
-[node name="SoundSettings" type="GridContainer" parent="UI"]
-anchor_left = 0.2
-anchor_top = 0.75
-anchor_right = 0.8
-anchor_bottom = 0.85
-margin_bottom = 51.0
-custom_constants/vseparation = 8
-custom_constants/hseparation = 24
-columns = 2
-
-[node name="MusicVolumeLabel" type="Label" parent="UI/SoundSettings"]
-margin_right = 176.0
-margin_bottom = 29.0
-text = "Music Volume: "
-
-[node name="MusicVolumeSlider" type="HSlider" parent="UI/SoundSettings"]
-margin_left = 200.0
-margin_right = 614.0
-margin_bottom = 29.0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-value = 100.0
-tick_count = 20
-ticks_on_borders = true
-
-[node name="SFXVolumeLabel" type="Label" parent="UI/SoundSettings"]
-margin_top = 37.0
-margin_right = 176.0
-margin_bottom = 66.0
-text = "Effects Volume: "
-
-[node name="SFXVolumeSlider" type="HSlider" parent="UI/SoundSettings"]
-margin_left = 200.0
-margin_top = 37.0
-margin_right = 614.0
-margin_bottom = 66.0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-value = 100.0
-tick_count = 20
-ticks_on_borders = true
-
-[node name="ControlsSettings" type="HBoxContainer" parent="UI"]
-visible = false
+[node name="Settings" type="GridContainer" parent="UI"]
 anchor_left = 0.2
 anchor_top = 0.7
 anchor_right = 0.8
-anchor_bottom = 0.7
-margin_right = 40.0
-margin_bottom = 49.0
-custom_constants/separation = 11
+anchor_bottom = 0.9
+margin_bottom = 51.0
+custom_constants/vseparation = 16
+custom_constants/hseparation = 32
+columns = 2
 
-[node name="ControlsLabel" type="Label" parent="UI/ControlsSettings"]
+[node name="ControlsLabel" type="Label" parent="UI/Settings"]
 margin_top = 10.0
-margin_right = 97.0
+margin_right = 176.0
 margin_bottom = 39.0
 text = "Controls:"
 
-[node name="UpButton" type="Button" parent="UI/ControlsSettings"]
-margin_left = 108.0
-margin_right = 158.0
+[node name="ControlsButton" type="Button" parent="UI/Settings"]
+margin_left = 208.0
+margin_right = 407.0
 margin_bottom = 49.0
 rect_min_size = Vector2( 50, 0 )
+size_flags_horizontal = 0
+text = "Re-map Controls"
+
+[node name="MusicVolumeLabel" type="Label" parent="UI/Settings"]
+margin_top = 65.0
+margin_right = 176.0
+margin_bottom = 94.0
+text = "Music Volume: "
+
+[node name="MusicVolumeSlider" type="HSlider" parent="UI/Settings"]
+margin_left = 208.0
+margin_top = 65.0
+margin_right = 614.0
+margin_bottom = 94.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+value = 100.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="SFXVolumeLabel" type="Label" parent="UI/Settings"]
+margin_top = 110.0
+margin_right = 176.0
+margin_bottom = 139.0
+text = "Effects Volume: "
+
+[node name="SFXVolumeSlider" type="HSlider" parent="UI/Settings"]
+margin_left = 208.0
+margin_top = 110.0
+margin_right = 614.0
+margin_bottom = 139.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+value = 100.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="ControlsPopup" type="PopupPanel" parent="UI"]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+margin_right = 8.0
+margin_bottom = 8.0
+
+[node name="Control" type="Control" parent="UI/ControlsPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="GridContainer" type="GridContainer" parent="UI/ControlsPopup/Control"]
+anchor_left = 0.5
+anchor_top = 0.1
+anchor_right = 0.5
+anchor_bottom = 0.1
+grow_horizontal = 2
+custom_constants/vseparation = 10
+custom_constants/hseparation = 20
+columns = 2
+
+[node name="BlankLabel" type="Label" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_right = 129.0
+margin_bottom = 29.0
+
+[node name="InstructionLabel" type="Label" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_left = 149.0
+margin_right = 349.0
+margin_bottom = 29.0
+text = "Click to remap"
+align = 1
+
+[node name="Label" type="Label" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_top = 49.0
+margin_right = 129.0
+margin_bottom = 78.0
 text = "Up"
+align = 2
 
-[node name="LeftButton" type="Button" parent="UI/ControlsSettings"]
-margin_left = 169.0
-margin_right = 231.0
-margin_bottom = 49.0
-rect_min_size = Vector2( 50, 0 )
+[node name="UpButton" type="Button" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_left = 149.0
+margin_top = 39.0
+margin_right = 349.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 200, 0 )
+focus_mode = 0
+toggle_mode = true
+script = ExtResource( 5 )
+action = "move_forward"
+
+[node name="Label2" type="Label" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_top = 108.0
+margin_right = 129.0
+margin_bottom = 137.0
 text = "Left"
+align = 2
 
-[node name="DownButton" type="Button" parent="UI/ControlsSettings"]
-margin_left = 242.0
-margin_right = 323.0
-margin_bottom = 49.0
-rect_min_size = Vector2( 50, 0 )
+[node name="LeftButton" type="Button" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_left = 149.0
+margin_top = 98.0
+margin_right = 349.0
+margin_bottom = 147.0
+rect_min_size = Vector2( 200, 0 )
+focus_mode = 0
+toggle_mode = true
+script = ExtResource( 5 )
+action = "move_left"
+
+[node name="Label3" type="Label" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_top = 167.0
+margin_right = 129.0
+margin_bottom = 196.0
 text = "Down"
+align = 2
 
-[node name="RightButton" type="Button" parent="UI/ControlsSettings"]
-margin_left = 334.0
-margin_right = 409.0
-margin_bottom = 49.0
-rect_min_size = Vector2( 50, 0 )
+[node name="DownButton" type="Button" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_left = 149.0
+margin_top = 157.0
+margin_right = 349.0
+margin_bottom = 206.0
+rect_min_size = Vector2( 200, 0 )
+focus_mode = 0
+toggle_mode = true
+script = ExtResource( 5 )
+action = "move_back"
+
+[node name="Label4" type="Label" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_top = 226.0
+margin_right = 129.0
+margin_bottom = 255.0
 text = "Right"
+align = 2
 
-[node name="ScoopDropButton" type="Button" parent="UI/ControlsSettings"]
-margin_left = 420.0
-margin_right = 569.0
-margin_bottom = 49.0
-rect_min_size = Vector2( 50, 0 )
+[node name="RightButton" type="Button" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_left = 149.0
+margin_top = 216.0
+margin_right = 349.0
+margin_bottom = 265.0
+rect_min_size = Vector2( 200, 0 )
+focus_mode = 0
+toggle_mode = true
+script = ExtResource( 5 )
+action = "move_right"
+
+[node name="Label5" type="Label" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_top = 285.0
+margin_right = 129.0
+margin_bottom = 314.0
 text = "Scoop/Drop"
+align = 2
+
+[node name="ScoopDropButton" type="Button" parent="UI/ControlsPopup/Control/GridContainer"]
+margin_left = 149.0
+margin_top = 275.0
+margin_right = 349.0
+margin_bottom = 324.0
+rect_min_size = Vector2( 200, 0 )
+focus_mode = 0
+toggle_mode = true
+script = ExtResource( 5 )
+action = "scoop"
+
+[node name="CloseButton" type="Button" parent="UI/ControlsPopup/Control"]
+anchor_left = 0.5
+anchor_top = 0.8
+anchor_right = 0.5
+anchor_bottom = 0.8
+grow_horizontal = 2
+text = "Close"
+script = ExtResource( 7 )
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
