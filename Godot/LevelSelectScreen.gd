@@ -12,9 +12,9 @@ onready var controlsPopup = $UI/ControlsPopup
 
 var currentLevelScene = null
 var currentLevelIndex = 0
-var completedLevels = []
 
 func _ready():
+	gameCompleteLabel.visible = false
 	var levelIndex = 0
 	for levelButton in levelButtonGrid.get_children():
 		levelButton.connect("load_level", self, "_load_level", [levelIndex])
@@ -27,7 +27,14 @@ func _ready():
 		musicVolumeSlider.value = Settings.musicVolume
 	if Settings.sfxVolume:
 		sfxVolumeSlider.value = Settings.sfxVolume
-
+	if Settings.highestCompletedLevel:
+		var highestCompletedLevel = Settings.highestCompletedLevel
+		var i=0
+		while i < levelButtonGrid.get_child_count() and i <= highestCompletedLevel + 1:
+			levelButtonGrid.get_child(i).disabled = false
+			i += 1
+		if highestCompletedLevel == (levelButtonGrid.get_child_count() - 1):
+			gameCompleteLabel.visible = true
 
 func _load_level(levelPath, levelIndex):
 	currentLevelScene = load(levelPath)
@@ -51,12 +58,13 @@ func _exit_level():
 
 func _level_complete():
 	# mark level as complete
-	completedLevels.append(currentLevelIndex)
+	if currentLevelIndex > Settings.highestCompletedLevel:
+		Settings.highestCompletedLevel = currentLevelIndex
 	# load next level directly
 	var nextLevelIndex = currentLevelIndex + 1
 	if levelButtonGrid.get_child_count() > nextLevelIndex:
 		var nextLevelButton = levelButtonGrid.get_child(nextLevelIndex)
-		levelButtonGrid.get_child(currentLevelIndex).disabled = false
+		levelButtonGrid.get_child(nextLevelIndex).disabled = false
 		_load_level(nextLevelButton.levelPath, nextLevelIndex)
 	else:
 		# all levels complete

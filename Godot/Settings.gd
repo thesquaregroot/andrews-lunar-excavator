@@ -6,12 +6,14 @@ const KEYMAP_FILE = "user://keymaps.dat"
 const CONFIG_CORE_SECTION = "Core"
 const CONFIG_MUSIC_VOLUME = "MusicVolume"
 const CONFIG_SFX_VOLUME = "SfxVolume"
+const CONFIG_HIGHEST_COMPLETED_LEVEL = "HighestCompletedLevel"
 
 var configFile : ConfigFile
 var keymaps : Dictionary
 
 var musicVolume setget _set_music_volume
 var sfxVolume setget _set_sfx_volume
+var highestCompletedLevel setget _set_highest_completed_level
 
 func _ready():
 	_load_config()
@@ -19,6 +21,7 @@ func _ready():
 	
 	musicVolume = configFile.get_value(CONFIG_CORE_SECTION, CONFIG_MUSIC_VOLUME, 100)
 	sfxVolume = configFile.get_value(CONFIG_CORE_SECTION, CONFIG_SFX_VOLUME, 100)
+	highestCompletedLevel = configFile.get_value(CONFIG_CORE_SECTION, CONFIG_HIGHEST_COMPLETED_LEVEL, null)
 
 func _load_config():
 	configFile = ConfigFile.new()
@@ -74,4 +77,9 @@ func _set_music_volume(value):
 func _set_sfx_volume(value):
 	sfxVolume = value
 	configFile.set_value(CONFIG_CORE_SECTION, CONFIG_SFX_VOLUME, value)
+	configFile.save(CONFIG_FILE)
+
+func _set_highest_completed_level(value):
+	highestCompletedLevel = value
+	configFile.set_value(CONFIG_CORE_SECTION, CONFIG_HIGHEST_COMPLETED_LEVEL, value)
 	configFile.save(CONFIG_FILE)
