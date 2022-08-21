@@ -14,6 +14,7 @@ config/name="Andrew's Lunar Excavator"
 run/main_scene="res://LevelSelectScreen.tscn"
 boot_splash/show_image=false
 config/icon="res://Images/logo.png"
+config/windows_native_icon="res://Images/logo.ico"
 
 [autoload]
 
