@@ -1,5 +1,7 @@
 extends Button
 
+# taken from input mapping demo: https://github.com/godotengine/godot-demo-projects/blob/06bdeb97dc245912998d42a8c001d83dcc557e0f/gui/input_mapping/ActionRemapButton.gd
+
 export(String) var action = "ui_up"
 
 func _ready():
@@ -25,9 +27,14 @@ func _unhandled_key_input(event):
 
 
 func remap_action_to(event):
+	# We first change the event in this game instance.
 	InputMap.action_erase_events(action)
 	InputMap.action_add_event(action, event)
+	# And then save it to the keymaps file
+	Settings.keymaps[action] = event
+	Settings.save_keymap()
 	text = "%s" % event.as_text()
+
 
 func display_current_key():
 	var current_key = InputMap.get_action_list(action)[0].as_text()

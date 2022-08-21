@@ -15,6 +15,10 @@ run/main_scene="res://LevelSelectScreen.tscn"
 boot_splash/show_image=false
 config/icon="res://Images/logo.png"
 
+[autoload]
+
+Settings="*res://Settings.gd"
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true

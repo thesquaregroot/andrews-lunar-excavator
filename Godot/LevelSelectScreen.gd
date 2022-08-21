@@ -23,6 +23,12 @@ func _ready():
 	sfxVolumeSlider.connect("value_changed", self, "_set_sfx_volume")
 	controlsButton.connect("pressed", controlsPopup, "popup")
 
+	if Settings.musicVolume:
+		musicVolumeSlider.value = Settings.musicVolume
+	if Settings.sfxVolume:
+		sfxVolumeSlider.value = Settings.sfxVolume
+
+
 func _load_level(levelPath, levelIndex):
 	currentLevelScene = load(levelPath)
 	currentLevelIndex = levelIndex
@@ -60,12 +66,15 @@ func _level_complete():
 		gameCompleteLabel.visible = true
 
 func _set_music_volume(value):
-	print(value)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music (Output)"), _to_db(value))
+	Settings.musicVolume = value
 
 func _set_sfx_volume(value):
-	print(value)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX (Output)"), _to_db(value))
+	Settings.sfxVolume = value
 
 func _to_db(value):
-	return (value - 100) / 100 * 80.0
+	var normalizedValue = value / 100.0
+	# interpolate between min and max DB values, using sqrt to lessen the effect of small reductions
+	return lerp(-72, 0, sqrt(normalizedValue))
+
