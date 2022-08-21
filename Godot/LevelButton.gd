@@ -1,6 +1,6 @@
 extends Button
 
-export (String, FILE, "*.tscn") var levelPath = "res://TemplateLevel.tscn"
+export (String, FILE, "*.tscn") var levelPath = "res://Levels/TemplateLevel.tscn"
 
 signal load_level(levelPath)
 

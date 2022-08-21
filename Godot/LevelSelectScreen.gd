@@ -4,8 +4,8 @@ onready var ui = $UI
 onready var levelButtonGrid = $UI/LevelButtonGrid
 onready var levelRoot = $LevelRoot
 onready var gameCompleteLabel = $UI/GameCompleteLabel
-onready var musicVolumeSlider = $UI/SoundControls/MusicVolumeSlider
-onready var sfxVolumeSlider = $UI/SoundControls/SFXVolumeSlider
+onready var musicVolumeSlider = $UI/SoundSettings/MusicVolumeSlider
+onready var sfxVolumeSlider = $UI/SoundSettings/SFXVolumeSlider
 
 var currentLevelScene = null
 var currentLevelIndex = 0
