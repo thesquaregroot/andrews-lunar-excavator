@@ -167,6 +167,7 @@ margin_right = 406.0
 margin_bottom = 175.0
 disabled = true
 text = "Level 10"
+levelPath = "res://Levels/Filler.tscn"
 
 [node name="Level11" parent="UI/LevelButtonGrid" instance=ExtResource( 1 )]
 anchor_right = 0.0
