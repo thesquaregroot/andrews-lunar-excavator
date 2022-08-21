@@ -189,62 +189,61 @@ disabled = true
 text = "Level 12"
 
 [node name="Settings" type="GridContainer" parent="UI"]
-anchor_left = 0.2
+anchor_left = 0.5
 anchor_top = 0.7
-anchor_right = 0.8
+anchor_right = 0.5
 anchor_bottom = 0.9
 margin_bottom = 51.0
+grow_horizontal = 2
 custom_constants/vseparation = 16
 custom_constants/hseparation = 32
 columns = 2
 
-[node name="ControlsLabel" type="Label" parent="UI/Settings"]
-margin_top = 10.0
-margin_right = 176.0
-margin_bottom = 39.0
-text = "Controls:"
-
-[node name="ControlsButton" type="Button" parent="UI/Settings"]
-margin_left = 208.0
-margin_right = 407.0
-margin_bottom = 49.0
-rect_min_size = Vector2( 50, 0 )
-size_flags_horizontal = 0
-text = "Re-map Controls"
-
 [node name="MusicVolumeLabel" type="Label" parent="UI/Settings"]
-margin_top = 65.0
 margin_right = 176.0
-margin_bottom = 94.0
+margin_bottom = 29.0
 text = "Music Volume: "
 
 [node name="MusicVolumeSlider" type="HSlider" parent="UI/Settings"]
 margin_left = 208.0
-margin_top = 65.0
-margin_right = 614.0
-margin_bottom = 94.0
-size_flags_horizontal = 3
+margin_right = 458.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 250, 0 )
 size_flags_vertical = 1
 value = 100.0
 tick_count = 20
 ticks_on_borders = true
 
 [node name="SFXVolumeLabel" type="Label" parent="UI/Settings"]
-margin_top = 110.0
+margin_top = 45.0
 margin_right = 176.0
-margin_bottom = 139.0
+margin_bottom = 74.0
 text = "Effects Volume: "
 
 [node name="SFXVolumeSlider" type="HSlider" parent="UI/Settings"]
 margin_left = 208.0
-margin_top = 110.0
-margin_right = 614.0
-margin_bottom = 139.0
-size_flags_horizontal = 3
+margin_top = 45.0
+margin_right = 458.0
+margin_bottom = 74.0
+rect_min_size = Vector2( 250, 0 )
 size_flags_vertical = 1
 value = 100.0
 tick_count = 20
 ticks_on_borders = true
+
+[node name="ControlsLabel" type="Label" parent="UI/Settings"]
+margin_top = 100.0
+margin_right = 176.0
+margin_bottom = 129.0
+text = "Controls:"
+
+[node name="ControlsButton" type="Button" parent="UI/Settings"]
+margin_left = 208.0
+margin_top = 90.0
+margin_right = 458.0
+margin_bottom = 139.0
+rect_min_size = Vector2( 50, 0 )
+text = "Re-map Controls"
 
 [node name="ControlsPopup" type="PopupPanel" parent="UI"]
 anchor_left = 0.1
