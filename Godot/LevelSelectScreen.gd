@@ -23,14 +23,14 @@ func _ready():
 	sfxVolumeSlider.connect("value_changed", self, "_set_sfx_volume")
 	controlsButton.connect("pressed", controlsPopup, "popup")
 
-	if Settings.musicVolume:
+	if Settings.musicVolume != null:
 		musicVolumeSlider.value = Settings.musicVolume
-	if Settings.sfxVolume:
+	if Settings.sfxVolume != null:
 		sfxVolumeSlider.value = Settings.sfxVolume
-	if Settings.highestCompletedLevel:
+	if Settings.highestCompletedLevel != null:
 		var highestCompletedLevel = Settings.highestCompletedLevel
 		var i=0
-		while i < levelButtonGrid.get_child_count() and i <= highestCompletedLevel + 1:
+		while i < levelButtonGrid.get_child_count() and i <= (highestCompletedLevel + 1):
 			levelButtonGrid.get_child(i).disabled = false
 			i += 1
 		if highestCompletedLevel == (levelButtonGrid.get_child_count() - 1):

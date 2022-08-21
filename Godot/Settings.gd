@@ -21,7 +21,7 @@ func _ready():
 	
 	musicVolume = configFile.get_value(CONFIG_CORE_SECTION, CONFIG_MUSIC_VOLUME, 100)
 	sfxVolume = configFile.get_value(CONFIG_CORE_SECTION, CONFIG_SFX_VOLUME, 100)
-	highestCompletedLevel = configFile.get_value(CONFIG_CORE_SECTION, CONFIG_HIGHEST_COMPLETED_LEVEL, null)
+	highestCompletedLevel = configFile.get_value(CONFIG_CORE_SECTION, CONFIG_HIGHEST_COMPLETED_LEVEL, -1)
 
 func _load_config():
 	configFile = ConfigFile.new()
